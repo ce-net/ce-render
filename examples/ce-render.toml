@@ -1,0 +1,20 @@
+# Example ce-render.toml — a 500-frame Blender render fanned across the GPU mesh.
+#
+# Run a dry-run plan first:   ce-render plan   --config examples/ce-render.toml
+# Then submit:                ce-render submit --config examples/ce-render.toml -o out.manifest.json
+# Fetch the frames:           ce-render fetch-all out.manifest.json -o out/
+
+kind          = "blender"               # blender | chrome | custom
+image         = "ce-net/blender:latest" # optional; defaults per kind
+input_cid     = ""                      # CID of scene.blend (put_object it first); empty = container self-fetches
+frames        = "1-500"                 # inclusive frame range (or a single frame, e.g. "42")
+shard_size    = 10                      # frames per shard (50 shards here)
+hosts         = 6                       # max distinct hosts to fan out to
+select        = "gpu"                   # atlas self-tag filter (omit for any docker host)
+bid_per_frame = "10000000000000000"     # base units (10^18 = 1 credit) → 0.01 credit/frame. Decimal STRING, never a float.
+cpu_cores     = 4
+mem_mb        = 8192
+frame_secs    = 600                     # per-shard cell duration budget (seconds)
+verify        = 0.05                    # re-render 5% of frames on a 2nd host to catch frauds (0 = off)
+args          = ["--render-format", "PNG"]
+cap           = ""                      # hex ce-cap chain granting render:frame (or pass --cap / $CE_RENDER_CAPS)
