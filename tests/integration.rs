@@ -4,7 +4,7 @@
 //! divergence, and the exact capability authorization a render host performs (a `render:frame` chain
 //! authorizes a deploy; an unrelated ability does not — attenuation is enforced).
 
-use ce_cap::{Caveats, Resource, SignedCapability, authorize, decode_chain, encode_chain};
+use ce_iam_core::{Caveats, Resource, SignedCapability, authorize, decode_chain, encode_chain};
 use ce_identity::Identity;
 use ce_render::manifest::{FrameResult, ResultManifest};
 use ce_render::proto::ABILITY_FRAME;
